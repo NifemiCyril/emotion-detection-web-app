@@ -1,5 +1,7 @@
 Flask
 tensorflow
-opencv-python
+keras
 numpy
-werkzeug
+opencv-python
+requests
+gunicorn
