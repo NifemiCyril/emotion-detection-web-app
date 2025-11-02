@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pkl
+venv/
+.env
+emotion_users.db
+static/uploads/
+train/
+test/
+train/
+test/
