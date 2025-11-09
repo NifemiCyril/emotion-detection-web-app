@@ -1,30 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Emotion Detection Web App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>😃 Emotion Detection Web App</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="text" name="username" placeholder="Enter your name" required><br>
-            <input type="file" name="image" accept="image/*" required><br>
-            <button type="submit">Detect Emotion</button>
-        </form>
-
-        {% if emotion %}
-            <div class="result">
-                <h2>Result for {{ username }}</h2>
-                <img src="{{ image_path }}" width="200"><br>
-                <h3>Detected Emotion: {{ emotion }}</h3>
-            </div>
-        {% endif %}
-    </div>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +8,8 @@
 <body>
     <div class="container">
         <h1>😊 Emotion Detection App</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
+
+        <form action="/" method="post" enctype="multipart/form-data">
             <input type="text" name="username" placeholder="Enter your name" required><br><br>
             <input type="file" name="image" accept="image/*" required><br><br>
             <button type="submit">Detect Emotion</button>
@@ -44,7 +18,7 @@
         {% if emotion %}
         <div class="result">
             <h2>Detected Emotion for {{ username }}: <span>{{ emotion }}</span></h2>
-            <img src="{{ image_path }}" alt="Uploaded Image">
+            <img src="{{ url_for('static', filename='uploads/' + image_path.split('/')[-1]) }}" alt="Uploaded Image">
         </div>
         {% endif %}
     </div>

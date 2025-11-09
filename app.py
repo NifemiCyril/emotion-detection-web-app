@@ -40,8 +40,10 @@ except Exception as e:
     print("❌ Error loading model:", e)
 
 # --- Database setup ---
+DB_NAME = "emotion_users.db"
+
 def init_db():
-    conn = sqlite3.connect("emotion_users.db")
+    conn = sqlite3.connect(DB_NAME)
     conn.execute('''CREATE TABLE IF NOT EXISTS users
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
                      username TEXT,
@@ -84,14 +86,27 @@ def upload():
         return render_template('index.html', error=f"Prediction failed: {e}")
 
     # --- Save to database ---
-    conn = sqlite3.connect("emotion_users.db")
-    conn.execute("INSERT INTO users (username, image_path, emotion) VALUES (?, ?, ?)",
-                 (username, path, emotion))
-    conn.commit()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DB_NAME)
+        conn.execute("INSERT INTO users (username, image_path, emotion) VALUES (?, ?, ?)",
+                     (username, path, emotion))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        return render_template('index.html', error=f"Database error: {e}")
 
     # --- Display result ---
     return render_template('index.html', emotion=emotion, image_path=path, username=username)
+
+# --- View all records ---
+@app.route('/records')
+def records():
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("SELECT username, image_path, emotion FROM users ORDER BY id DESC")
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('records.html', data=data)
 
 # --- Run app ---
 if __name__ == '__main__':
